@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let cardToggle = false
 
         const form = document.getElementById('form')
-
+        const cardContainer = document.getElementById('card-container')
 
 
 
@@ -26,23 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getFlashcards = () => {
         return allFlashcards.map(c => {
-            return card.innerHTML += `
-            <section class="container">
-            <div id="card">
-            <div data-id=${c.id}>
-            <figure class="front">${c.body_front}</figure>
-            <figure class="back">${c.body_back}</figure>
+            return cardContainer.innerHTML += `
+            <div class="scene scene--card">
+             <div class="card">
+                <div class="card__face card__face--front">${c.body_front}</div>
+                <div class="card__face card__face--back">${c.body_back}</div>
+             </div>
             </div>
-            </div>
-            </section><br />   
+            <br />   
             `
         })
     };
 
     // listen for card click
 
-    const cards = document.querySelectorAll('#card');
-    Array.from(cards).forEach(c => c.addEventListener("click",  () => c.classList.toggle('flipped')))
+    const cards = document.querySelectorAll('.card');
+        cards.forEach(c => c.addEventListener("click",  () => c.classList.toggle('is-flipped')))
            
         
     // create new card form 
