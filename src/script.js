@@ -40,8 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // listen for card click
 
-    const cards = document.querySelectorAll('.card');
-        cards.forEach(c => c.addEventListener("click",  () => c.classList.toggle('is-flipped')))
+    const cards = document.querySelectorAll('#card-container');
+ 
+        cards.forEach(c => {
+            
+             c.addEventListener("click",  () => {
+              
+             c.classList.toggle('is-flipped')
+        
+            })
+        })
            
         
     // create new card form 
