@@ -1,0 +1,22 @@
+{
+  "name": "crashcard-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsound-zz/CrashCard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dsound-zz/CrashCard/issues"
+  },
+  "homepage": "https://github.com/dsound-zz/CrashCard#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

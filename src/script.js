@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allFlashcards = [];
     let cardToggle = false
+    const form = document.getElementById('form')
+    const card = document.querySelector('#card-container')
 
-        const form = document.getElementById('form')
-        const cardContainer = document.getElementById('card-container')
 
 
 
@@ -16,43 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:9000/api/v1/flashcards')
             .then(res => res.json())
             .then(flashcards => {
+                console.log(flashcards);
                 allFlashcards = flashcards
                 getFlashcards()
             });
     }
 
-    
-    // flip action 
+
+    // flip action
 
     const getFlashcards = () => {
         return allFlashcards.map(c => {
-            return cardContainer.innerHTML += `
-            <div class="scene scene--card">
+            return card.innerHTML += `
+           <div class="container">
              <div class="card">
-                <div class="card__face card__face--front">${c.body_front}</div>
-                <div class="card__face card__face--back">${c.body_back}</div>
+                 <h4 class="front" data-id=${c.id}>${c.body_front}</h4>
+                 <h4 class="back">${c.body_back}</h4>
              </div>
-            </div>
-            <br />   
-            `
+           </div>
+           `
         })
     };
 
     // listen for card click
 
-    const cards = document.querySelectorAll('#card-container');
- 
-        cards.forEach(c => {
-            
-             c.addEventListener("click",  () => {
-              
-             c.classList.toggle('is-flipped')
-        
-            })
-        })
-           
-        
-    // create new card form 
+    card.addEventListener('click', e => {
+        if (e.target.dataset.id) {
+            return e.target.parentNode.classList.toggle('flipped')
+        } else if (Array.from(e.target.classList).includes('back')) {
+            return e.target.parentNode.classList.toggle('flipped')
+        }
+    });
+
+    
+    // create new card form
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -77,4 +74,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchCards()
 
-}); // end DOMContentLoaded 
+}); // end DOMContentLoaded
