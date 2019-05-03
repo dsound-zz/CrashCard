@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let allFlashcards = [];
     let cardToggle = false
 
-    const card = document.querySelector('#card')
-    const form = document.getElementById('form')
+        const form = document.getElementById('form')
 
 
 
@@ -42,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // listen for card click
 
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(c => c.addEventListener("click",  () => c.classList.toggle('flipped')))
+    const cards = document.querySelectorAll('#card');
+    Array.from(cards).forEach(c => c.addEventListener("click",  () => c.classList.toggle('flipped')))
            
         
     // create new card form 
