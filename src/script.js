@@ -1,41 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM is loaded");
     
-
-   
-
-
+    
+    
+    
+    
     let allFlashcards = [];
-    // const form = document.getElementById('form')
-    const card = document.querySelector('#card-container')
-
-
+    const form = document.getElementById('form');
+    const card = document.querySelector('#card-container');
 
 
     // fetch all cards
 
-    const fetchCards = () => {
+        const fetchCards = () => {
         fetch('http://localhost:9000/api/v1/flashcards')
             .then(res => res.json())
             .then(flashcards => {
-                console.log(flashcards);
                 allFlashcards = flashcards
-                getFlashcards()
+                console.log("I'm in Fetch:", allFlashcards)
+              
+                renderCards()
             });
-    }
+        };
 
 
     // flip action
 
-    const getFlashcards = () => {
+    const renderCards = () => {
         return allFlashcards.map(c => {
             return card.innerHTML += `
            <div class="container">
-             <div class="card">
-                 <h4 class="front" data-id=${c.id}>${c.body_front}</h4>
-                 <h4 class="back">${c.body_back}</h4>
+             <div class="card" data-card=${c.id}>
+             <i class="black delete icon" id="delete-card"></i>
+             <i class="black edit icon" id="edit-card"></i>
+                 <h2 class="front" data-id=${c.id}>${c.body_front}</h>
+                <h4 class="back">${c.body_back}</h4>
+                 </div>
              </div>
-           </div>
            `
         })
     };
@@ -88,32 +89,113 @@ document.addEventListener('DOMContentLoaded', () => {
 
  
     
-    // form.addEventListener('submit', (e) => {
-    //     e.preventDefault();
-    //     const cardFront = document.getElementById('card-front').value
-    //     const cardBack = document.getElementById('card-back').value
-    //     fetch('http://localhost:9000/api/v1/flashcards', {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Accept": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             body_front: cardFront,
-    //             body_back: cardBack
-    //         })
-    //     }).then(res => res.json())
-    //         .then(newCard => {
-    //             allFlashcards.push(newCard)
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const cardFront = document.getElementById('card-front').value
+        const cardBack = document.getElementById('card-back').value
+        fetch('http://localhost:9000/api/v1/flashcards', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                body_front: cardFront,
+                body_back: cardBack
+            })
+        }).then(res => res.json())
+            .then(newCard => {
+                allFlashcards.push(newCard)
+                renderCards()
+                closeModal()
+                
+            })
+    });
 
-    //         })
-    // });
+
 
 
     // delete cards
 
+   card.addEventListener('click', e => {
+       const cardId = e.target.parentElement.dataset.card
+       const foundCard = allFlashcards.find(fcard => {
+           return fcard.id == cardId
+       })
+       console.log(foundCard)
+       
+       if (e.target.id == "delete-card") {
+           confirm("Do you want to delete this card?")
+           card.parentElement.removeChild(card)
+        fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
+            method: "DELETE"
+        }) 
+        const originalCardIndex = allFlashcards.indexOf(foundCard)
+        allFlashcards.splice(originalCardIndex, 1)
+          
+        console.log("I'm in delete:", allFlashcards)
+           
+       
+    };
+   });
 
+    // edit cards 
 
-    fetchCards()
+   card.addEventListener('click', e => {
+       
+       const cardId = e.target.parentElement.dataset.card 
+       const foundCard = allFlashcards.find(fcard => {
+           return fcard.id == cardId 
+       })
+      
+       if (e.target.id == "edit-card") {
+           
+            openModal(foundCard)
+            form.childNodes[1].childNodes[3].value = e.target.nextElementSibling.innerText 
+            form.childNodes[2].parentElement[1].value = e.target.parentElement.lastElementChild.innerText
+            let submitBtn = document.getElementById('submit')
+            submitBtn.innerText = "Edit"
+            form.addEventListener('submit', (e) => {
+               e.preventDefault();
+               const cardFront = document.getElementById('card-front').value
+               const cardBack = document.getElementById('card-back').value
+               fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
+                   method: "PATCH",
+                   headers: {
+                       "Content-Type": "application/json",
+                       "Accept": "application/json"
+                   },
+                   body: JSON.stringify({
+                       body_front: cardFront,
+                       body_back: cardBack
+                   })
+               })
+               .then(res => res.json())
+                   .then(updatedCard => {
+                    console.log("I'm in edit:", allFlashcards)
+                    debugger 
+                    const originalCardIndex = allFlashcards.indexOf(foundCard)
+                    
+                    allFlashcards.splice(originalCardIndex, 1, updatedCard)
+                    
+                    closeModal()
+                })
+                    
+            })
+       }
+    })
 
+fetchCards()
+
+                
 }); // end DOMContentLoaded
+       
+
+
+   
+
+    
+
+
+
+  
