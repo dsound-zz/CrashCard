@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM is loaded");
+    
+
+   
 
 
     let allFlashcards = [];
-    let cardToggle = false
-    const form = document.getElementById('form')
+    // const form = document.getElementById('form')
     const card = document.querySelector('#card-container')
 
 
@@ -51,26 +53,66 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // create new card form
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const cardFront = document.getElementById('card-front').value
-        const cardBack = document.getElementById('card-back').value
-        fetch('http://localhost:9000/api/v1/flashcards', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                body_front: cardFront,
-                body_back: cardBack
-            })
-        }).then(res => res.json())
-            .then(newCard => {
-                allFlashcards.push(newCard)
+    // Get DOM Elements
+    const modal = document.querySelector('#my-modal');
+    const modalBtn = document.querySelector('#modal-btn');
+    const closeBtn = document.querySelector('.close');
 
-            })
-    });
+    // Events
+    modalBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', outsideClick);
+
+    // Open
+    function openModal() {
+        modal.style.display = 'block';
+    }
+
+    // Close
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Close If Outside Click
+    function outsideClick(e) {
+        if (e.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+
+    // const create = document.getElementById('create-card')
+    // create.addEventListener('click', (e) => {
+    //     modal();
+    // });
+
+ 
+    
+    // form.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    //     const cardFront = document.getElementById('card-front').value
+    //     const cardBack = document.getElementById('card-back').value
+    //     fetch('http://localhost:9000/api/v1/flashcards', {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Accept": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             body_front: cardFront,
+    //             body_back: cardBack
+    //         })
+    //     }).then(res => res.json())
+    //         .then(newCard => {
+    //             allFlashcards.push(newCard)
+
+    //         })
+    // });
+
+
+    // delete cards
+
+
 
     fetchCards()
 
