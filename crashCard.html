@@ -1,55 +1,57 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="src/style.css">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="src/style.css">
 
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" />
 
-  <title>CrashCard</title>
-</head>
+    <title>CrashCard</title>
+  </head>
 
-<body>
-  <header>
-    <h1>Crash Card</h1>
-    <button id="modal-btn" class="button">Create Card</button>
-  </header>
+    <body>
+      <!-- header -->
+      <header>
+        <h1>Crash Card</h1>
+        <button id="modal-btn" class="button">Create Card</button>
+      </header>
 
-  
-  <div id="my-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close">&times;</span>
-        
-        
-        
-        <form class="ui form" id="form">
-          <div class="field">
-            <label>Card Front</label>
-            <input type="text" name="card-front" placeholder="Card Front" id="card-front" value="">
-          </div>
-          <div class="field">
-            <label>Card Back</label>
-            <input type="text" name="card-back" placeholder="Card Back" id="card-back" value="">
-          </div>
-          <div class="field">
-          </div>
+      <!-- modal -->
+      <div id="my-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close">&times;</span>
+            
+            
+            <!-- form  -->
+            <form class="ui form" id="form">
+              <div class="field">
+                <label>Card Front</label>
+                <input type="text" name="card-front" placeholder="Card Front" id="card-front" value="">
+            </div>
+              <div class="field">
+                <label>Card Back</label>
+                <input type="text" name="card-back" placeholder="Card Back" id="card-back" value="">
+              </div>
+              <div class="field">
+              </div>
+              <button class="ui button" id="submit" type="submit">Create</button>
+              </form>
+              
+            </div>
         </div>
-        <button class="ui button" id="submit" type="submit">Create</button>
-      </form>
+      </div>
+
       
-    </div>
-  </div>
-</div>
-
-<div id="card-container">
-  
-</div>
+      <!-- card -->
+      <div id="card-container">
+      </div>
 
 
 
-<script type="text/javascript" src="src/script.js"></script>
-</body>
+      <script type="text/javascript" src="src/script.js"></script>
+    </body>
 </html> 
