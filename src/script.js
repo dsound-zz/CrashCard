@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM is loaded");
-    
-    
-    
-    
-    
+
+
+
+
+
     let allFlashcards = [];
     const form = document.getElementById('form');
     const card = document.querySelector('#card-container');
@@ -12,16 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // fetch all cards
 
-        const fetchCards = () => {
+    const fetchCards = () => {
         fetch('http://localhost:9000/api/v1/flashcards')
             .then(res => res.json())
             .then(flashcards => {
                 allFlashcards = flashcards
                 console.log("I'm in Fetch:", allFlashcards)
-              
+
                 renderCards()
             });
-        };
+    };
 
 
     // flip action
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
+
     // create new card form
 
     // Get DOM Elements
@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //     modal();
     // });
 
- 
-    
+
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const cardFront = document.getElementById('card-front').value
@@ -106,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(res => res.json())
             .then(newCard => {
                 allFlashcards.push(newCard)
-                renderCards()
-                closeModal()
                 
+                closeModal()
+
             })
     });
 
@@ -117,85 +117,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // delete cards
 
-   card.addEventListener('click', e => {
-       const cardId = e.target.parentElement.dataset.card
-       const foundCard = allFlashcards.find(fcard => {
-           return fcard.id == cardId
-       })
-       console.log(foundCard)
-       
-       if (e.target.id == "delete-card") {
-           confirm("Do you want to delete this card?")
-           card.parentElement.removeChild(card)
-        fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
-            method: "DELETE"
-        }) 
-        const originalCardIndex = allFlashcards.indexOf(foundCard)
-        allFlashcards.splice(originalCardIndex, 1)
-          
-        console.log("I'm in delete:", allFlashcards)
-           
-       
-    };
-   });
+    card.addEventListener('click', e => {
+        const cardId = e.target.parentElement.dataset.card
+        const foundCard = allFlashcards.find(fcard => {
+            return fcard.id == cardId
+        })
+        console.log(foundCard)
+
+        if (e.target.id == "delete-card") {
+            confirm("Do you want to delete this card?")
+            card.parentElement.removeChild(card)
+            fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
+                method: "DELETE"
+            })
+        };
+    });
 
     // edit cards 
 
-   card.addEventListener('click', e => {
-       
-       const cardId = e.target.parentElement.dataset.card 
-       const foundCard = allFlashcards.find(fcard => {
-           return fcard.id == cardId 
-       })
-      
-       if (e.target.id == "edit-card") {
-           
+    card.addEventListener('click', e => {
+
+        const cardId = e.target.parentElement.dataset.card
+        const foundCard = allFlashcards.find(fcard => {
+            return fcard.id == cardId
+        })
+
+        if (e.target.id == "edit-card") {
+
             openModal(foundCard)
-            form.childNodes[1].childNodes[3].value = e.target.nextElementSibling.innerText 
+            form.childNodes[1].childNodes[3].value = e.target.nextElementSibling.innerText
             form.childNodes[2].parentElement[1].value = e.target.parentElement.lastElementChild.innerText
             let submitBtn = document.getElementById('submit')
             submitBtn.innerText = "Edit"
             form.addEventListener('submit', (e) => {
-               e.preventDefault();
-               const cardFront = document.getElementById('card-front').value
-               const cardBack = document.getElementById('card-back').value
-               fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
-                   method: "PATCH",
-                   headers: {
-                       "Content-Type": "application/json",
-                       "Accept": "application/json"
-                   },
-                   body: JSON.stringify({
-                       body_front: cardFront,
-                       body_back: cardBack
-                   })
-               })
-               .then(res => res.json())
-                   .then(updatedCard => {
-                    console.log("I'm in edit:", allFlashcards)
-                    debugger 
-                    const originalCardIndex = allFlashcards.indexOf(foundCard)
-                    
-                    allFlashcards.splice(originalCardIndex, 1, updatedCard)
-                    
-                    closeModal()
+                e.preventDefault();
+                const cardFront = document.getElementById('card-front').value
+                const cardBack = document.getElementById('card-back').value
+                fetch(`http://localhost:9000/api/v1/flashcards/${foundCard.id}`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        body_front: cardFront,
+                        body_back: cardBack
+                    })
                 })
-                    
-            })
-       }
-    })
+                    .then(res => res.json())
+                    .then(updatedCard => {
 
-fetchCards()
 
-                
+                        closeModal()
+                    })
+
+            });
+        }
+    });
+
+    fetchCards()
+
+
 }); // end DOMContentLoaded
-       
-
-
-   
-
-    
 
 
 
-  
+
+
+
+
+
+
+
